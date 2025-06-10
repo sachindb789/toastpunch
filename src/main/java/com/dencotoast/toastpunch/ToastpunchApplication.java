@@ -8,7 +8,7 @@ public class ToastpunchApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ToastpunchApplication.class, args);
-		System.out.println("Hello");
+		System.out.println("Hello from new branch");
 	}
 
 }
