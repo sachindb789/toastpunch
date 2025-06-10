@@ -1,16 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JDK17'       // Configure this in Jenkins (Manage Jenkins > Global Tool Configuration)
-        maven 'Maven3'    // Configure Maven name similarly
-    }
-
-    environment {
-        JAVA_HOME = "${tool 'JDK17'}"
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -19,31 +9,52 @@ pipeline {
                     credentialsId: 'github'
             }
         }
+
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                sh 'chmod +x mvnw'
+                sh './mvnw clean package'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh './mvnw test'
             }
         }
-
         stage('Run App') {
             steps {
                 sh 'nohup java -jar target/toastpunch-0.0.1-SNAPSHOT.jar &'
             }
         }
+
+//         stage('Deploy') {
+//             steps {
+//                 sh '''
+//                     DEPLOY_DIR=/opt/toastpunch
+//                     SERVICE_NAME=toastpunch-service
+//
+//                     echo "Removing old app.jar if it exists"
+//                     sudo rm -f $DEPLOY_DIR/app.jar
+//
+//                     echo "Copying new JAR to $DEPLOY_DIR"
+//                     sudo cp "$WORKSPACE/target/"*.jar $DEPLOY_DIR/app.jar
+//
+//                     echo "Restarting $SERVICE_NAME service..."
+//                     sudo systemctl restart $SERVICE_NAME
+//
+//                     echo "$SERVICE_NAME restarted successfully."
+//                 '''
+//             }
+//         }
     }
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo '✅ Build and deployment successful!'
         }
         failure {
-            echo 'Build failed.'
+            echo '❌ Build failed.'
         }
     }
 }
