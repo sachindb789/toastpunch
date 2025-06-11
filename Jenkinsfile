@@ -35,13 +35,13 @@ pipeline {
                     SERVICE_NAME=toastpunch.service
 
                     echo "Removing old app.jar if it exists"
-                    sudo rm -f $DEPLOY_DIR/app.jar
+                    sudo /bin/rm -f $DEPLOY_DIR/app.jar
 
                     echo "Copying new JAR to $DEPLOY_DIR"
-                    sudo cp "$WORKSPACE/target/"*.jar $DEPLOY_DIR/app.jar
+                    sudo /bin/cp "$WORKSPACE/target/"*.jar $DEPLOY_DIR/app.jar
 
-                    echo "Restarting $SERVICE_NAME..."
-                    sudo systemctl restart $SERVICE_NAME
+                    echo "Restarting $SERVICE_NAME service..."
+                    sudo /bin/systemctl restart $SERVICE_NAME
 
                     echo "$SERVICE_NAME restarted successfully."
                 '''
