@@ -28,33 +28,34 @@ pipeline {
             }
         }
 
-//         stage('Deploy') {
-//             steps {
-//                 sh '''
-//                     DEPLOY_DIR=/opt/toastpunch
-//                     SERVICE_NAME=toastpunch-service
-//
-//                     echo "Removing old app.jar if it exists"
-//                     sudo rm -f $DEPLOY_DIR/app.jar
-//
-//                     echo "Copying new JAR to $DEPLOY_DIR"
-//                     sudo cp "$WORKSPACE/target/"*.jar $DEPLOY_DIR/app.jar
-//
-//                     echo "Restarting $SERVICE_NAME service..."
-//                     sudo systemctl restart $SERVICE_NAME
-//
-//                     echo "$SERVICE_NAME restarted successfully."
-//                 '''
-//             }
-//         }
+        stage('Deploy') {
+            steps {
+                sh '''
+                    DEPLOY_DIR=/opt/toastpunch
+                    SERVICE_NAME=toastpunch.service
+
+                    echo "Removing old app.jar if it exists"
+                    sudo rm -f $DEPLOY_DIR/app.jar
+
+                    echo "Copying new JAR to $DEPLOY_DIR"
+                    sudo cp "$WORKSPACE/target/"*.jar $DEPLOY_DIR/app.jar
+
+                    echo "Restarting $SERVICE_NAME..."
+                    sudo systemctl restart $SERVICE_NAME
+
+                    echo "$SERVICE_NAME restarted successfully."
+                '''
+            }
+        }
+
     }
 
     post {
         success {
-            echo '✅ Build and deployment successful!'
+            echo ' Build and deployment successful!'
         }
         failure {
-            echo '❌ Build failed.'
+            echo ' Build failed.'
         }
     }
 }
