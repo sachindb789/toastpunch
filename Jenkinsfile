@@ -22,11 +22,11 @@ pipeline {
                 sh './mvnw test'
             }
         }
-        stage('Run App') {
-            steps {
-                sh 'nohup java -jar target/toastpunch-0.0.1-SNAPSHOT.jar &'
-            }
-        }
+//         stage('Run App') {
+//             steps {
+//                 sh 'nohup java -jar target/toastpunch-0.0.1-SNAPSHOT.jar &'
+//             }
+//         }
 
         stage('Deploy') {
             steps {
